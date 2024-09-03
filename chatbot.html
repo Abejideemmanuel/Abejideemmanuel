@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: whitesmoke;
+              }
+        #chatbox {
+            width: 300px;
+            height: 400px;
+            border: 1px solid #ccc;
+            overflow-y: scroll;
+            padding: 10px;
+        }
+        #input {
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            margin-bottom: 0.5%;
+            height: 7vh;
+            border: none;
+            outline: none;
+        }
+        #sendBtn {
+            width: 100%;
+            padding: 8px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 15px;
+            height: 7vh;
+            outline: none;
+        }
+
+        sub{
+            padding-left: 48%;
+            color: white;
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+    <div id="chatbox"></div>
+    <input type="text" id="input" placeholder="Chat...">
+    <button id="sendBtn">Send</button><br>
+    <sub><b>&copy; Genesis</b></sub>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function(event) {
+            const chatbox = document.getElementById("chatbox");
+            const input = document.getElementById("input");
+            const sendBtn = document.getElementById("sendBtn");
+
+            const responses = {
+                "hi": ["Hello!", "Hi there!", "Hey!"],
+                "can you assist me with something": ["sure","yeah,sure","i'll be glad to"],
+                "can you do something for me": ["i'll be glad to if it is within my capability", "sure, that's why i'm here"],
+                "let's play a game": ["that's a nice idea, which one would you like to play:<br><ul>Hangman game</ul><ul>Word chain</ul><ul></ul>"],
+                "let us play a game": ["that's a nice idea, which one would you like to play:<br><ul>Hangman game</ul><ul>Word chain</ul><ul></ul>"],
+                "chat": ["Hello!","Hey there!"],
+                "let's play game": ["that's a nice idea, which one would you like to play:<br><ul>Hangman game</ul><ul>Word chain</ul><ul></ul>"],
+                "play a game": ["that's a nice idea, which one would you like to play:<br><ul>Hangman game</ul><ul>Word chain</ul><ul></ul>"],
+                "play game": ["that's a nice idea, which one would you like to play:<br><ul>Hangman game</ul><ul>Word chain</ul><ul></ul>"],
+                "can you assist me in doing something": ["i'll be glad to if it is within my capability","sure, that's why i'm here"],
+                "can you help me with something": ["sure", "i'll be glad to"],
+                "hello": ["Hello!", "Hi there!", "Hey!"],
+                "how are you": ["I'm doing well, thank you!", "I'm great, thanks for asking!", "I'm fine, how about you?"],
+                "bye": ["Goodbye!", "See you later!", "Bye! Take care!"],
+                "okay": ["Yea"],
+                "hey": ["how are you", "hi","hi how may i help you today"],
+                "i'm fine":["that's nice"],
+                "thanks": ["you are welcome","i'm glad to be of assistance"],
+                "thank you": ["you are welcome","i'm glad to be of assistance"],
+                "i'm grateful": ["you are welcome","i'm glad to be of assistance"],
+                "thanks so much": ["you are welcome","i'm glad to be of assistance"],
+                "thank you so much": ["you are welcome","i'm glad to be of assistance"],
+                "i'm good": ["that's nice"],
+                "what is your name": ["you can call me leo", "my name is Leo"],
+                "i'm fine": ["That's nice"],
+                "tell me about a day in the life of a high school student": ["A day in the life of a high school student typically involves:<br><b><ul><li>Morning Routine:</li></ul></b> Waking up early, getting dressed, and having breakfast.<br><b><ul><li>Commuting:</li></ul></b> Traveling to school by bus, carpool, or walking.<br><b><ul><li>Classes:</li></ul></b> Attending scheduled classes, taking notes, and participating in discussions.<br><b><ul><li>Lunch Break:</li></ul></b> Socializing with friends, grabbing a bite to eat, and relaxing.<br><b><ul><li>Extracurricular activities:</li></ul></b> Participating in sports, clubs ,and other activities.<br><b><ul><li>Homework and studying:</li></ul></b> Working on assignments, reading, and preparing for tests.<br><b><ul><li>Breaks and relaxation:</li></ul></b> Taking short breaks, listening to music, or chatting with friends.<br><b><ul><li>Dinner and family time:</li></ul></b> Spending time with family, sharing experiences, and bonding.<br><b><ul><li>Evening routine:</li></ul></b> Finishing homework, preparing for the next day, and winding down.<br><b><ul><li>Sleep:</li></ul></b> Getting enough rest to recharge for the next day."],
+                "i'm good": ["That's nice"],
+                "a day in the life of a high school student": ["A day in the life of a high school student typically involves:<br><b><ul><li>Morning Routine:</li></ul></b> Waking up early, getting dressed, and having breakfast.<br><b><ul><li>Commuting:</li></ul></b> Traveling to school by bus, carpool, or walking.<br><b><ul><li>Classes:</li></ul></b> Attending scheduled classes, taking notes, and participating in discussions.<br><b><ul><li>Lunch Break:</li></ul></b> Socializing with friends, grabbing a bite to eat, and relaxing.<br><b><ul><li>Extracurricular activities:</li></ul></b> Participating in sports, clubs ,and other activities.<br><b><ul><li>Homework and studying:</li></ul></b> Working on assignments, reading, and preparing for tests.<br><b><ul><li>Breaks and relaxation:</li></ul></b> Taking short breaks, listening to music, or chatting with friends.<br><b><ul><li>Dinner and family time:</li></ul></b> Spending time with family, sharing experiences, and bonding.<br><b><ul><li>Evening routine:</li></ul></b> Finishing homework, preparing for the next day, and winding down.<br><b><ul><li>Sleep:</li></ul></b> Getting enough rest to recharge for the next day."],
+                "leo": ["Yes"],
+                "about a day in the life of a high school student": ["A day in the life of a high school student typically involves:<br><b><ul><li>Morning Routine:</li></ul></b> Waking up early, getting dressed, and having breakfast.<br><b><ul><li>Commuting:</li></ul></b> Traveling to school by bus, carpool, or walking.<br><b><ul><li>Classes:</li></ul></b> Attending scheduled classes, taking notes, and participating in discussions.<br><b><ul><li>Lunch Break:</li></ul></b> Socializing with friends, grabbing a bite to eat, and relaxing.<br><b><ul><li>Extracurricular activities:</li></ul></b> Participating in sports, clubs ,and other activities.<br><b><ul><li>Homework and studying:</li></ul></b> Working on assignments, reading, and preparing for tests.<br><b><ul><li>Breaks and relaxation:</li></ul></b> Taking short breaks, listening to music, or chatting with friends.<br><b><ul><li>Dinner and family time:</li></ul></b> Spending time with family, sharing experiences, and bonding.<br><b><ul><li>Evening routine:</li></ul></b> Finishing homework, preparing for the next day, and winding down.<br><b><ul><li>Sleep:</li></ul></b> Getting enough rest to recharge for the next day."],
+                "the life of a high school student": ["A day in the life of a high school student typically involves:<br><b><ul><li>Morning Routine:</li></ul></b> Waking up early, getting dressed, and having breakfast.<br><b><ul><li>Commuting:</li></ul></b> Traveling to school by bus, carpool, or walking.<br><b><ul><li>Classes:</li></ul></b> Attending scheduled classes, taking notes, and participating in discussions.<br><b><ul><li>Lunch Break:</li></ul></b> Socializing with friends, grabbing a bite to eat, and relaxing.<br><b><ul><li>Extracurricular activities:</li></ul></b> Participating in sports, clubs ,and other activities.<br><b><ul><li>Homework and studying:</li></ul></b> Working on assignments, reading, and preparing for tests.<br><b><ul><li>Breaks and relaxation:</li></ul></b> Taking short breaks, listening to music, or chatting with friends.<br><b><ul><li>Dinner and family time:</li></ul></b> Spending time with family, sharing experiences, and bonding.<br><b><ul><li>Evening routine:</li></ul></b> Finishing homework, preparing for the next day, and winding down.<br><b><ul><li>Sleep:</li></ul></b> Getting enough rest to recharge for the next day."],
+                "life of a high school student": ["A day in the life of a high school student typically involves:<br><b><ul><li>Morning Routine:</li></ul></b> Waking up early, getting dressed, and having breakfast.<br><b><ul><li>Commuting:</li></ul></b> Traveling to school by bus, carpool, or walking.<br><b><ul><li>Classes:</li></ul></b> Attending scheduled classes, taking notes, and participating in discussions.<br><b><ul><li>Lunch Break:</li></ul></b> Socializing with friends, grabbing a bite to eat, and relaxing.<br><b><ul><li>Extracurricular activities:</li></ul></b> Participating in sports, clubs ,and other activities.<br><b><ul><li>Homework and studying:</li></ul></b> Working on assignments, reading, and preparing for tests.<br><b><ul><li>Breaks and relaxation:</li></ul></b> Taking short breaks, listening to music, or chatting with friends.<br><b><ul><li>Dinner and family time:</li></ul></b> Spending time with family, sharing experiences, and bonding.<br><b><ul><li>Evening routine:</li></ul></b> Finishing homework, preparing for the next day, and winding down.<br><b><ul><li>Sleep:</li></ul></b> Getting enough rest to recharge for the next day."],
+                "tell me about you": ["My name is leo, i am a chatbot developed by EMMA ZENO, i am designed to chat with users and offer assistance when needed.","i was developed by EMMA ZENO to chat with users. i can keep your company by chatting with you,telling you stories and jokes. i can also offer assistance when needed."],
+                "yeah": ["okay then"],
+                "tell me more about you": ["i can keep your company by telling you interesting stories and jokes","i can be your chat buddy"],
+                "who is emma zeno": ["EMMA ZENO can be regarded as the developer who created me"],
+                "who is Emma Zeno": ["EMMA ZENO can be regarded as the developer who created me"],
+                "so your name is leo": ["yes"],
+                "your name is leo": ["yes"],
+                "who is EMMA ZENO": ["EMMA ZENO can be regarded as the developer who created me"],
+                "who is Emma zeno": ["EMMA ZENO can be regarded as the developer who created me"],
+                "sure": ["okay"],
+                "your name is leo": ["yes"],
+                "am fine": ["that's nice to here"],
+                "am good": ["that nice to hear"],
+                "i need help with something": ["i'll be glad to be of help"],
+                "i'm bored": ["would you like me to tell you a story , joke, riddle, or would you like to play a game"],
+                "am bored": ["would you like me to tell you a story , joke, riddle, or would you like to play a game"],
+                "bored": ["would you like me to tell you a story , joke, riddle, or would you like to play a game"],
+                "default": ["I'm sorry, I didn't understand that.", "Could you please rephrase that?", "I'm not sure what you mean."]
+            };
+
+            function getResponse(message) {
+                message = message.toLowerCase();
+                if (responses.hasOwnProperty(message)) {
+                    return responses[message][Math.floor(Math.random() * responses[message].length)];
+                } else {
+                    return responses["default"][Math.floor(Math.random() * responses["default"].length)];
+                }
+            }
+
+            function appendMessage(sender, message) {
+                const newMessage = document.createElement("p");
+                newMessage.innerHTML = `<strong>${sender}:</strong> ${message}`;
+                chatbox.appendChild(newMessage);
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }
+
+            function processInput() {
+                const message = input.value.trim();
+                if (message !== "") {
+                    appendMessage("You", message);
+                    input.value = "";
+                    setTimeout(function() {
+                        const response = getResponse(message);
+                        appendMessage("Bot", response);
+                    }, 500);
+                }
+            }
+
+            sendBtn.addEventListener("click", processInput);
+
+            input.addEventListener("keypress", function(event) {
+                if (event.key === "Enter") {
+                    processInput();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

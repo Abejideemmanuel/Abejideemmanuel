@@ -1,0 +1,129 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+  
+  <style>
+    body{
+        background-color: cyan;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    .psw-screen{
+        background-color: skyblue;
+        width: 50%;
+        border-radius: 15px;
+        height: 7vh;
+        text-align: center;
+        margin-left: 18rem;
+    }
+    p{
+        font-weight: bold;
+        font-size: 15pt;
+        padding-top: 8px;
+    }
+    .char-digit{
+        font-weight: bold;
+        font-size: 13pt;
+    }
+    button{
+        background-color: skyblue;
+        border: none;
+        border-radius: 10px;
+        width: 50%;
+        height: 7vh;
+        margin-left: 19rem;
+        text-align: center;
+        font-weight: bold;
+        font-size: 16pt;
+        margin-top: 1rem;
+    }
+    select{
+        background-color: skyblue;
+        width: 25%;
+        border: none;
+        text-align: center;
+        border-radius: 10px;
+        height: 5vh;
+        font-weight: bold;
+        font-size: 15pt;
+    }
+   label{
+       font-weight: bold;
+       font-size: 13pt;
+   }
+   .container{
+       border: none;
+       margin-right: 1rem;
+       margin-left: 0.5rem;
+       height: 50vh;
+       padding-left: 8px;
+       padding-top: 10px;
+       background-color: #0ad1c8;
+       width: 95%;
+       border-radius: 15px;
+       margin-top: 5rem;
+       box-shadow: 5px 5px 10px grey;
+   }
+   sub{
+    padding-left: 48%;
+    color: #45dfb1;
+   }
+  </style>
+  <title>Password Generator</title>
+</head>
+<body oncontextmenu="return false;">
+<div class="container">
+  <div class="psw-screen">
+    <p class="password-text">ivbu</p>
+  </div>
+  <p class="char-digit">Number of characters</p>
+  <select class="psw-length">
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="7">7</option>
+  </select><br>
+  <label for="letter-box">Contains letter</label>
+  <input type="checkbox" id="letter-box" checked><br>
+  <label for="number-box">Contains number</label>
+  <input type="checkbox" id="number-box"><br>
+  <button class="psw-btn" onclick="passwordGenerate()">Generate</button><br>
+  <sub><b>&copy; Genesis</b></sub>
+</div>
+  <script>
+    const lengthChk = document.getElementsByClassName("psw-length")[0];
+    const display = document.getElementsByClassName("psw-screen")[0];
+    const letter = document.getElementById("letter-box");
+    const number = document.getElementById("number-box");
+    let letters = "abcdefghijklmnopqrstuvwxyz";
+    let numbers = "1234567890";
+
+    function getLetters() {
+      return letters[Math.floor(Math.random() * letters.length)];
+    }
+
+    function getNumbers() {
+      return numbers[Math.floor(Math.random() * numbers.length)];
+    }
+
+    function passwordGenerate() {
+      const passLen = lengthChk.value;
+      let password = "";
+      if (letter.checked) {
+        password += getLetters();
+      }
+      if (number.checked) {
+        password += getNumbers();
+      }
+      
+      for (let i = password.length; i < passLen; i++) {
+        if (letter.checked && Math.random() < 0.5) {
+          password += getLetters();
+        } else {
+          password += getNumbers();
+        }
+      }
+      display.getElementsByClassName("password-text")[0].innerHTML = password;
+    }
+  </script>
+</body>
+</html>
